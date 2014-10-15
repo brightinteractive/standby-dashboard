@@ -32,7 +32,6 @@ public class SyncTaskImpl extends CopyTask implements SyncTask
 	@Value("${source.directory}")
 	public void setSource(String absolutePath)
 	{
-		System.out.println("setSource..." + absolutePath);
 		super.setSrcDir(absolutePath);
 	}
 
