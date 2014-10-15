@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.Selectors;
 import org.apache.commons.vfs2.tasks.CopyTask;
+import org.apache.log4j.Logger;
 import org.apache.tools.ant.Project;
 
 /**
@@ -19,6 +20,7 @@ public class SyncTaskImpl extends CopyTask implements SyncTask
 	private Project project = new Project();
 	protected boolean deleteMissingSourceFiles = false;
 	private String ignoreMissingSource;
+	private Logger log = Logger.getLogger(SyncTaskImpl.class);
 
 	public SyncTaskImpl()
 	{
@@ -63,6 +65,7 @@ public class SyncTaskImpl extends CopyTask implements SyncTask
 	public void execute()
 	{
 		System.out.println("executing...");
+		log.info("executing...");
 		super.execute();
 	}
 
