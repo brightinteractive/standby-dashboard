@@ -1,13 +1,17 @@
 package com.brightinteractive.standbydashboard;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
 public class SyncTaskImplTest
@@ -136,6 +140,26 @@ public class SyncTaskImplTest
 		assertEquals("leave-me(leave-me-text);lvl0.txt(lvl-0-text);lvl1.txt(lvl-1-text);lvl2.txt(lvl-2-text);lvl3.txt(lvl-3-text);", dirToString(destinationFile));
 	}
 
+	@Test
+	public void shouldNotSyncExcludeFolder() throws IOException
+	{
+		createNestedDirs(sourceFile, "lvl", 0, 3);
+		File excluded = new File(sourceFile, "excluded");
+
+		excluded.mkdir();
+
+		createNestedDirs(excluded, "ex", 0, 1);
+		SyncTaskImpl syncTask = createSyncTask();
+
+		syncTask.setExcludes("excluded");
+		syncTask.setDeleteMissingSourceFiles(true);
+
+		syncTask.execute();
+
+		assertEquals("ex0.txt(ex-0-text);ex1.txt(ex-1-text);lvl0.txt(lvl-0-text);lvl1.txt(lvl-1-text);lvl2.txt(lvl-2-text);lvl3.txt(lvl-3-text);", dirToString(sourceFile));
+		assertEquals("lvl0.txt(lvl-0-text);lvl1.txt(lvl-1-text);lvl2.txt(lvl-2-text);lvl3.txt(lvl-3-text);", dirToString(destinationFile));
+	}
+
 	private SyncTaskImpl createSyncTask()
 	{
 		SyncTaskImpl syncTask = new SyncTaskImpl();
@@ -147,14 +171,16 @@ public class SyncTaskImplTest
 	private String dirToString(File dir) throws IOException
 	{
 		Iterator<File> iter = FileUtils.iterateFiles(dir, TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
-		StringBuffer buffer = new StringBuffer();
+		List<String> fileInfoList = new ArrayList<String>();
+
 		while (iter.hasNext())
 		{
 			File file = iter.next();
-			buffer.append(file.getName() +
-						  "(" + FileUtils.readFileToString(file) + ")" +
-						  ";");
+			fileInfoList.add(file.getName() +
+							 "(" + FileUtils.readFileToString(file) + ")" +
+							 ";");
 		}
-		return buffer.toString();
+		Collections.sort(fileInfoList);
+		return StringUtils.join(fileInfoList, "");
 	}
 }

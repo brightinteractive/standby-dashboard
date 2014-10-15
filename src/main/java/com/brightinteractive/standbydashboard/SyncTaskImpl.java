@@ -4,9 +4,14 @@ package com.brightinteractive.standbydashboard;
  * Copyright 2014 Bright Interactive, All Rights Reserved.
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Value;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.vfs2.FileObject;
+import org.apache.commons.vfs2.FileSystemException;
 import org.apache.commons.vfs2.Selectors;
 import org.apache.commons.vfs2.tasks.CopyTask;
 import org.apache.log4j.Logger;
@@ -21,6 +26,7 @@ public class SyncTaskImpl extends CopyTask implements SyncTask
 	protected boolean deleteMissingSourceFiles = false;
 	private String ignoreMissingSource;
 	private Logger log = Logger.getLogger(SyncTaskImpl.class);
+	private String srcDir;
 
 	public SyncTaskImpl()
 	{
@@ -33,6 +39,7 @@ public class SyncTaskImpl extends CopyTask implements SyncTask
 	public void setSource(String absolutePath)
 	{
 		System.out.println("setSource..." + absolutePath);
+		srcDir = absolutePath;
 		super.setSrcDir(absolutePath);
 	}
 
@@ -59,6 +66,25 @@ public class SyncTaskImpl extends CopyTask implements SyncTask
 	public void setIncludes(String includes)
 	{
 		super.setIncludes(includes);
+	}
+
+	@Value("${source.excludes}")
+	public void setExcludes(String excludes) throws FileSystemException
+	{
+		FileObject source = resolveFile(srcDir);
+		ExcludingFileSelector fileSelector = new ExcludingFileSelector();
+		fileSelector.setExcludes(excludes);
+
+		FileObject[] files = source.findFiles(fileSelector);
+
+		List<String> includeFilenames = new ArrayList<String>();
+
+		for (FileObject file: files)
+		{
+			includeFilenames.add(file.getName().getBaseName());
+		}
+
+		super.setIncludes(StringUtils.join(includeFilenames, ','));
 	}
 
 	@Override
