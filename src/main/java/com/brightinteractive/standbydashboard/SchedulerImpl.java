@@ -25,12 +25,6 @@ public class SchedulerImpl implements Scheduler
 	@Autowired
 	private SyncTask syncTask;
 
-	@PostConstruct
-	public void afterPropertiesSet() throws Exception
-	{
-		log.info("out..." + scheduleCron);
-	}
-
 	@Scheduled(cron="${schedule.cron}")
 	public void fireEvent()
 	{
