@@ -18,7 +18,9 @@
 		</div>
 		<div id="log">
 			<h1>Standby sync log</h1>
-			<pre><c:out value="${log}"/></pre>
+			<c:forEach items="${logLines}" var="logLine">
+				<p><c:out value="${logLine}"/></p>
+			</c:forEach>
 		</div>
     </body>
 </html>
