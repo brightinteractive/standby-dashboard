@@ -64,9 +64,15 @@ public class SyncTaskImpl extends CopyTask implements SyncTask
 	@Override
 	public void execute()
 	{
-		System.out.println("executing...");
-		log.info("executing...");
+		log.info("executing started");
 		super.execute();
+		log.info("execution completed");
+	}
+
+	@Override
+	public void handleOutput(String output)
+	{
+		log.info(output);
 	}
 
 	@Override
