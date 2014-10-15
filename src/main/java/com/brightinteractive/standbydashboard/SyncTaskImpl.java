@@ -20,6 +20,7 @@ import org.apache.tools.ant.Project;
 /**
  * @author Bright Interactive
  */
+
 public class SyncTaskImpl extends CopyTask implements SyncTask
 {
 	private Project project = new Project();
@@ -27,6 +28,7 @@ public class SyncTaskImpl extends CopyTask implements SyncTask
 	private String ignoreMissingSource;
 	private Logger log = Logger.getLogger(SyncTaskImpl.class);
 	private String srcDir;
+	private String excludes;
 
 	public SyncTaskImpl()
 	{
@@ -69,7 +71,12 @@ public class SyncTaskImpl extends CopyTask implements SyncTask
 	}
 
 	@Value("${source.excludes}")
-	public void setExcludes(String excludes) throws FileSystemException
+	public void setExcludes(String excludes)
+	{
+		this.excludes = excludes;
+	}
+
+	public void setIncludesBasedOnExcludes() throws FileSystemException
 	{
 		FileObject source = resolveFile(srcDir);
 		ExcludingFileSelector fileSelector = new ExcludingFileSelector();
@@ -90,6 +97,19 @@ public class SyncTaskImpl extends CopyTask implements SyncTask
 	@Override
 	public void execute()
 	{
+		if (excludes != null && !"".equals(excludes))
+		{
+			log.info("Detected excludes list, initialising file list...");
+			try
+			{
+				setIncludesBasedOnExcludes();
+			}
+			catch (FileSystemException e)
+			{
+				log.error("Could not initialise file list", e);
+			}
+		}
+
 		System.out.println("executing...");
 		log.info("executing...");
 		super.execute();

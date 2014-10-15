@@ -10,6 +10,7 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import org.apache.log4j.Logger;
@@ -20,10 +21,12 @@ import org.apache.log4j.Logger;
 public class SchedulerImpl implements Scheduler
 {
 	private static final Logger log = Logger.getLogger(SchedulerImpl.class);
+
 	@Value("${schedule.cron}")
 	private String scheduleCron;
+
 	@Autowired
-	private SyncTask syncTask;
+	ApplicationContext context;
 
 	@PostConstruct
 	public void afterPropertiesSet() throws Exception
@@ -34,8 +37,8 @@ public class SchedulerImpl implements Scheduler
 	@Scheduled(cron="${schedule.cron}")
 	public void fireEvent()
 	{
+		SyncTask syncTask = context.getBean(SyncTask.class);
 		syncTask.execute();
-
 	}
 
 }

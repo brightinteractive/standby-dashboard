@@ -4,11 +4,13 @@ package com.brightinteractive.standbydashboard;
  * Copyright 2014 Bright Interactive, All Rights Reserved.
  */
 
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.context.annotation.Scope;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Controller;
 
@@ -40,6 +42,7 @@ public class AppConfig
 	}
 
 	@Bean(name = "syncTask")
+	@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 	public SyncTask getSyncTask()
 	{
 		return new SyncTaskImpl();

@@ -13,6 +13,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
+import org.mockito.Mockito;
+import org.powermock.api.mockito.PowerMockito;
 
 public class SyncTaskImplTest
 {
@@ -158,6 +160,32 @@ public class SyncTaskImplTest
 
 		assertEquals("ex0.txt(ex-0-text);ex1.txt(ex-1-text);lvl0.txt(lvl-0-text);lvl1.txt(lvl-1-text);lvl2.txt(lvl-2-text);lvl3.txt(lvl-3-text);", dirToString(sourceFile));
 		assertEquals("lvl0.txt(lvl-0-text);lvl1.txt(lvl-1-text);lvl2.txt(lvl-2-text);lvl3.txt(lvl-3-text);", dirToString(destinationFile));
+	}
+
+	@Test
+	public void syncInitialisesFileListOnExecuteIfExcludesDetected() throws IOException
+	{
+		createNestedDirs(sourceFile, "lvl", 0, 3);
+
+		SyncTaskImpl syncTask = PowerMockito.spy(createSyncTask());
+		syncTask.setExcludes("excluded");
+		syncTask.setDeleteMissingSourceFiles(true);
+		syncTask.execute();
+
+		Mockito.verify(syncTask).setIncludesBasedOnExcludes();
+	}
+
+	@Test
+	public void syncDoesNotInitialisesFileListOnExecuteIfNoExcludesDetected() throws IOException
+	{
+		createNestedDirs(sourceFile, "lvl", 0, 3);
+
+		SyncTaskImpl syncTask = PowerMockito.spy(createSyncTask());
+		syncTask.setIncludes("lvl0");
+		syncTask.setDeleteMissingSourceFiles(true);
+		syncTask.execute();
+
+		Mockito.verify(syncTask, Mockito.never()).setIncludesBasedOnExcludes();
 	}
 
 	private SyncTaskImpl createSyncTask()
