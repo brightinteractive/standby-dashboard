@@ -53,7 +53,7 @@ public class HomeController {
 	public ModelAndView test(HttpServletResponse response) throws IOException
 	{
 		Map model = new HashMap();
-		List<String> logLines = IOUtils.readLines(new FileInputStream("sync.log"), "UTF-8");
+		List<String> logLines = IOUtils.readLines(new FileInputStream("log/sync.log"), "UTF-8");
 
 		if (logLines.size() > LOG_LINES_TO_SHOW)
 		{
