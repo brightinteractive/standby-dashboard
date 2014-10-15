@@ -5,6 +5,7 @@ package com.brightinteractive.standbydashboard;
  */
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -26,6 +27,7 @@ public class SyncTaskImpl extends CopyTask implements SyncTask
 	private Project project = new Project();
 	protected boolean deleteMissingSourceFiles = false;
 	private String[] ignoreMissingSource;
+
 	private Logger log = Logger.getLogger(SyncTaskImpl.class);
 	private String srcDir;
 	private String excludes;
@@ -134,12 +136,8 @@ public class SyncTaskImpl extends CopyTask implements SyncTask
 		{
 			return;
 		}
-
-		else
-		{
-			log("deleting " + destFile.getURL());
-			destFile.delete(Selectors.SELECT_SELF);
-		}
+		log("deleting " + destFile.getURL());
+		destFile.delete(Selectors.SELECT_SELF);
 	}
 
 	public boolean isIgnored(final FileObject destFile)
@@ -148,7 +146,7 @@ public class SyncTaskImpl extends CopyTask implements SyncTask
 		{
 			for (String ignore : ignoreMissingSource)
 			{
-				if (destFile.getName().getURI().endsWith("/" + ignore))
+				if (ignore != null && destFile.getName().getBaseName().matches(ignore))
 				{
 					return true;
 				}
