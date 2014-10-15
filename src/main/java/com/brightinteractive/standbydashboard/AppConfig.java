@@ -15,6 +15,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Controller;
 
 import com.brightinteractive.spring.utils.BrightConfigUtils;
+import com.brightinteractive.standbydashboard.controller.SettingsBean;
 
 /**
  * @author Bright Interactive
@@ -31,14 +32,22 @@ public class AppConfig
 	@Bean
 	public static PropertyPlaceholderConfigurer propertySourcesPlaceholderConfigurer()
 	{
-		return BrightConfigUtils
+		PropertyPlaceholderConfigurer configurer = BrightConfigUtils
 			.getStandardPropertyPlaceholderConfigurer(APPLICATION_PROPERTIES_FILE, APP_CONTEXT_NAME);
+		configurer.setIgnoreUnresolvablePlaceholders(true);
+		return configurer;
 	}
 
 	@Bean(name = "scheduler")
 	public Scheduler getScheduler()
 	{
 		return new SchedulerImpl();
+	}
+
+	@Bean(name = "settings")
+	public SettingsBean getSettings()
+	{
+		return new SettingsBean();
 	}
 
 	@Bean(name = "syncTask")
