@@ -31,9 +31,7 @@ public class SyncTaskImplTest
 	{
 		File levelDir = new File(parentDir, prefix + current);
 		levelDir.mkdir();
-		File levelFile = new File(levelDir, prefix + current + ".txt");
-		FileUtils.writeStringToFile(levelFile, prefix +
-											   "-" + current + "-text");
+		createTextFile(levelDir, prefix + current + ".txt", prefix + "-" + current + "-text");
 		if (current == max)
 		{
 			return levelDir;
@@ -42,6 +40,13 @@ public class SyncTaskImplTest
 		{
 			return createNestedDirs(levelDir, prefix, ++current, max);
 		}
+	}
+
+	private File createTextFile(File parent, String filename, String content) throws IOException
+	{
+		File file = new File(parent, filename);
+		FileUtils.writeStringToFile(file, content);
+		return file;
 	}
 
 	@org.junit.After
@@ -121,19 +126,18 @@ public class SyncTaskImplTest
 		File deleted = new File(destinationFile, "delete-me");
 		deleted.mkdir();
 		createNestedDirs(deleted, "del", 0, 1);
-		File ignored = new File(destinationFile, "leave-me");
-		ignored.createNewFile();
-		FileUtils.writeStringToFile(ignored, "leave-me-text");
+		createTextFile(destinationFile, "leave-me", "leave-me-text");
+		createTextFile(destinationFile, "and-me", "and-me-text");
 
 		SyncTaskImpl syncTask = createSyncTask();
 		syncTask.setIncludes("lvl0");
 		syncTask.setDeleteMissingSourceFiles(true);
-		syncTask.setIgnoreMissingSource("leave-me");
+		syncTask.setIgnoreMissingSource("leave-me,and-me");
 
 		syncTask.execute();
 
 		assertEquals("lvl0.txt(lvl-0-text);lvl1.txt(lvl-1-text);lvl2.txt(lvl-2-text);lvl3.txt(lvl-3-text);", dirToString(sourceFile));
-		assertEquals("leave-me(leave-me-text);lvl0.txt(lvl-0-text);lvl1.txt(lvl-1-text);lvl2.txt(lvl-2-text);lvl3.txt(lvl-3-text);", dirToString(destinationFile));
+		assertEquals("and-me(and-me-text);leave-me(leave-me-text);lvl0.txt(lvl-0-text);lvl1.txt(lvl-1-text);lvl2.txt(lvl-2-text);lvl3.txt(lvl-3-text);", dirToString(destinationFile));
 	}
 
 	private SyncTaskImpl createSyncTask()

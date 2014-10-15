@@ -19,7 +19,7 @@ public class SyncTaskImpl extends CopyTask implements SyncTask
 {
 	private Project project = new Project();
 	protected boolean deleteMissingSourceFiles = false;
-	private String ignoreMissingSource;
+	private String[] ignoreMissingSource;
 	private Logger log = Logger.getLogger(SyncTaskImpl.class);
 
 	public SyncTaskImpl()
@@ -51,7 +51,8 @@ public class SyncTaskImpl extends CopyTask implements SyncTask
 	@Value("${destination.ignoreMissing}")
 	public void setIgnoreMissingSource(String ignoreMissingSource)
 	{
-		this.ignoreMissingSource = ignoreMissingSource;
+		;
+		this.ignoreMissingSource = ignoreMissingSource.split(",");
 	}
 
 	@Value("${source.includes}")
@@ -84,15 +85,31 @@ public class SyncTaskImpl extends CopyTask implements SyncTask
 	protected void handleMissingSourceFile(final FileObject destFile)
 		throws Exception
 	{
-		if (ignoreMissingSource != null && destFile.getName().getURI().endsWith("/" + ignoreMissingSource))
+		if (isIgnored(destFile))
 		{
 			return;
 		}
+
 		else
 		{
 			log("deleting " + destFile.getURL());
 			destFile.delete(Selectors.SELECT_SELF);
 		}
+	}
+
+	public boolean isIgnored(final FileObject destFile)
+	{
+		if (ignoreMissingSource != null)
+		{
+			for (String ignore : ignoreMissingSource)
+			{
+				if (destFile.getName().getURI().endsWith("/" + ignore))
+				{
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 }
