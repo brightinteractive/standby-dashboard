@@ -143,6 +143,54 @@ public class SyncTaskImplTest
 	}
 
 	@Test
+	public void shouldDeleteMissingSourceExceptIgnoredUsingRegexp() throws IOException
+	{
+		createNestedDirs(sourceFile, "lvl", 0, 3);
+		File deleted = new File(destinationFile, "delete-me");
+		deleted.mkdir();
+		createNestedDirs(deleted, "del", 0, 1);
+		File ignored = new File(destinationFile, "leave-me");
+		ignored.createNewFile();
+		FileUtils.writeStringToFile(ignored, "leave-me-text");
+
+		SyncTaskImpl syncTask = createSyncTask();
+		syncTask.setIncludes("lvl0");
+		syncTask.setDeleteMissingSourceFiles(true);
+		syncTask.setIgnoreMissingSource("leave-.+");
+
+		syncTask.execute();
+
+		assertEquals("lvl0.txt(lvl-0-text);lvl1.txt(lvl-1-text);lvl2.txt(lvl-2-text);lvl3.txt(lvl-3-text);", dirToString(sourceFile));
+		assertEquals("leave-me(leave-me-text);lvl0.txt(lvl-0-text);lvl1.txt(lvl-1-text);lvl2.txt(lvl-2-text);lvl3.txt(lvl-3-text);", dirToString(destinationFile));
+	}
+
+	@Test
+	public void shouldDeleteMissingSourceExceptIgnoredUsingMoreThanOneRegexp() throws IOException
+	{
+		createNestedDirs(sourceFile, "lvl", 0, 3);
+		File deleted = new File(destinationFile, "delete-me");
+		deleted.mkdir();
+		createNestedDirs(deleted, "del", 0, 1);
+		File ignored = new File(destinationFile, "leave-me");
+		ignored.createNewFile();
+		FileUtils.writeStringToFile(ignored, "leave-me-text");
+
+		ignored = new File(destinationFile, "also-leave-me");
+		ignored.createNewFile();
+		FileUtils.writeStringToFile(ignored, "also-leave-me-text");
+
+		SyncTaskImpl syncTask = createSyncTask();
+		syncTask.setIncludes("lvl0");
+		syncTask.setDeleteMissingSourceFiles(true);
+		syncTask.setIgnoreMissingSource("leave-.+,also-leave-.+");
+
+		syncTask.execute();
+
+		assertEquals("lvl0.txt(lvl-0-text);lvl1.txt(lvl-1-text);lvl2.txt(lvl-2-text);lvl3.txt(lvl-3-text);", dirToString(sourceFile));
+		assertEquals("also-leave-me(also-leave-me-text);leave-me(leave-me-text);lvl0.txt(lvl-0-text);lvl1.txt(lvl-1-text);lvl2.txt(lvl-2-text);lvl3.txt(lvl-3-text);", dirToString(destinationFile));
+	}
+
+	@Test
 	public void shouldNotSyncExcludeFolder() throws IOException
 	{
 		createNestedDirs(sourceFile, "lvl", 0, 3);

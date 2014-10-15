@@ -5,6 +5,7 @@ package com.brightinteractive.standbydashboard;
  */
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -25,7 +26,7 @@ public class SyncTaskImpl extends CopyTask implements SyncTask
 {
 	private Project project = new Project();
 	protected boolean deleteMissingSourceFiles = false;
-	private String ignoreMissingSource;
+	private List<String> ignoreMissingSource = new ArrayList<String>();
 	private Logger log = Logger.getLogger(SyncTaskImpl.class);
 	private String srcDir;
 	private String excludes;
@@ -61,7 +62,7 @@ public class SyncTaskImpl extends CopyTask implements SyncTask
 	@Value("${destination.ignoreMissing}")
 	public void setIgnoreMissingSource(String ignoreMissingSource)
 	{
-		this.ignoreMissingSource = ignoreMissingSource;
+		this.ignoreMissingSource = Arrays.asList(ignoreMissingSource.split(","));
 	}
 
 	@Value("${source.includes}")
@@ -131,15 +132,17 @@ public class SyncTaskImpl extends CopyTask implements SyncTask
 	protected void handleMissingSourceFile(final FileObject destFile)
 		throws Exception
 	{
-		if (ignoreMissingSource != null && destFile.getName().getURI().endsWith("/" + ignoreMissingSource))
+
+		for (String ignoreMissingRegex: ignoreMissingSource)
 		{
-			return;
+			if (ignoreMissingRegex != null && destFile.getName().getBaseName().matches(ignoreMissingRegex))
+			{
+				return;
+			}
 		}
-		else
-		{
-			log("deleting " + destFile.getURL());
-			destFile.delete(Selectors.SELECT_SELF);
-		}
+
+		log("deleting " + destFile.getURL());
+		destFile.delete(Selectors.SELECT_SELF);
 	}
 
 }
