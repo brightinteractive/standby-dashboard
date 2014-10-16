@@ -10,12 +10,10 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import net.redhogs.cronparser.CronExpressionDescriptor;
 import org.apache.commons.io.IOUtils;
 
 @Controller
@@ -29,7 +27,7 @@ public class HomeController {
 	public ModelAndView test(HttpServletResponse response) throws IOException
 	{
 		Map model = new HashMap();
-		List<String> logLines = IOUtils.readLines(new FileInputStream("log/sync.log"), "UTF-8");
+		List<String> logLines = IOUtils.readLines(new FileInputStream("log/standby-sync.log"), "UTF-8");
 
 		if (logLines.size() > LOG_LINES_TO_SHOW)
 		{
