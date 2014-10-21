@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -22,12 +23,14 @@ public class HomeController {
 	private final int LOG_LINES_TO_SHOW = 6;
 	@Autowired
 	private SettingsBean settingsBean;
+	@Value("${log.directory}")
+	private String logDirectory;
 
 	@RequestMapping(value="/")
 	public ModelAndView test(HttpServletResponse response) throws IOException
 	{
 		Map model = new HashMap();
-		List<String> logLines = IOUtils.readLines(new FileInputStream("log/standby-sync.log"), "UTF-8");
+		List<String> logLines = IOUtils.readLines(new FileInputStream(logDirectory + "/standby-sync.log"), "UTF-8");
 
 		if (logLines.size() > LOG_LINES_TO_SHOW)
 		{
@@ -39,6 +42,4 @@ public class HomeController {
 
 		return new ModelAndView("home", model);
 	}
-
-
 }
