@@ -135,7 +135,7 @@ public class SyncTaskImpl extends CopyTask implements SyncTask
 		{
 			return;
 		}
-		log("deleting " + destFile.getURL());
+		log.info("deleting " + destFile.getURL());
 		destFile.delete(Selectors.SELECT_SELF);
 	}
 

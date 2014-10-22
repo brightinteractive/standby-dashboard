@@ -1,44 +1,37 @@
 package com.brightinteractive.standbydashboard.controller;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Logger;
+
+import com.brightinteractive.standbydashboard.logging.SyncTaskMessageProvider;
 
 @Controller
 public class HomeController
 {
-
-	private final int LOG_LINES_TO_SHOW = 6;
 	@Autowired
 	private SettingsBean settingsBean;
-	@Value("${log.directory}")
-	private String logDirectory;
+	@Autowired
+	private SyncTaskMessageProvider syncTaskMessageProvider;
+
+	private Logger log = Logger.getLogger(this.getClass());
 
 	@RequestMapping(value = "/")
 	public ModelAndView test(HttpServletResponse response) throws IOException
 	{
 		Map model = new HashMap();
-		List<String> logLines = IOUtils.readLines(new FileInputStream(logDirectory + "/standby-sync.log"), "UTF-8");
 
-		if (logLines.size() > LOG_LINES_TO_SHOW)
-		{
-			logLines = logLines.subList(logLines.size() - LOG_LINES_TO_SHOW, logLines.size());
-		}
-		model.put("logLines", logLines);
+		model.put("logLines", syncTaskMessageProvider.getSyncTaskLogMessages());
 		model.put("settings", settingsBean);
-
 
 		return new ModelAndView("home", model);
 	}
