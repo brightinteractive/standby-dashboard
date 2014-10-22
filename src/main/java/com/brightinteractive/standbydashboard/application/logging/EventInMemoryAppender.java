@@ -1,4 +1,4 @@
-package com.brightinteractive.standbydashboard.logging;
+package com.brightinteractive.standbydashboard.application.logging;
 
 /*
  * Copyright 2014 Bright Interactive, All Rights Reserved.

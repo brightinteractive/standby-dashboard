@@ -1,6 +1,4 @@
-package com.brightinteractive.standbydashboard.logging;
-
-import static org.junit.Assert.*;
+package com.brightinteractive.standbydashboard.application.logging;
 
 import org.apache.log4j.PatternLayout;
 import org.apache.log4j.spi.LoggingEvent;

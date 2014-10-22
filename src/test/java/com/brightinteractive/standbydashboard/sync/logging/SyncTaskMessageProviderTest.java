@@ -1,6 +1,4 @@
-package com.brightinteractive.standbydashboard.logging;
-
-import static org.junit.Assert.*;
+package com.brightinteractive.standbydashboard.sync.logging;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +11,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
+
+import com.brightinteractive.standbydashboard.application.logging.EventInMemoryAppender;
 
 public class SyncTaskMessageProviderTest
 {
@@ -37,8 +37,8 @@ public class SyncTaskMessageProviderTest
 	{
 		Mockito.when(syncTaskMessageProvider.findLogAppender()).thenReturn(null);
 
-		assertNotNull(syncTaskMessageProvider.getSyncTaskLogMessages());
-		assertTrue(syncTaskMessageProvider.getSyncTaskLogMessages().isEmpty());
+		Assert.assertNotNull(syncTaskMessageProvider.getSyncTaskLogMessages());
+		Assert.assertTrue(syncTaskMessageProvider.getSyncTaskLogMessages().isEmpty());
 	}
 
 	@Test
@@ -50,7 +50,7 @@ public class SyncTaskMessageProviderTest
 
 		Mockito.when(syncTaskMessageProvider.getSyncTaskAppenders()).thenReturn(appenders.iterator());
 
-		assertEquals(expectedMessages, syncTaskMessageProvider.getSyncTaskLogMessages());
+		Assert.assertEquals(expectedMessages, syncTaskMessageProvider.getSyncTaskLogMessages());
 	}
 
 }

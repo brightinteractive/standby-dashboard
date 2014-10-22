@@ -1,4 +1,4 @@
-package com.brightinteractive.standbydashboard.controller;
+package com.brightinteractive.standbydashboard.application.controller;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -13,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import org.apache.log4j.Logger;
 
-import com.brightinteractive.standbydashboard.logging.SyncTaskMessageProvider;
+import com.brightinteractive.standbydashboard.sync.logging.SyncTaskMessageProvider;
 
 @Controller
 public class HomeController

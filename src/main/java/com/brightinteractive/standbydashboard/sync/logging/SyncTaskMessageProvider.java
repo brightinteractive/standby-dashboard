@@ -1,4 +1,4 @@
-package com.brightinteractive.standbydashboard.logging;
+package com.brightinteractive.standbydashboard.sync.logging;
 
 /*
  * Copyright 2014 Bright Interactive, All Rights Reserved.
@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 import org.apache.commons.collections.iterators.EnumerationIterator;
 import org.apache.log4j.Appender;
 import org.apache.log4j.Logger;
-import org.apache.log4j.spi.LoggingEvent;
 
-import com.brightinteractive.standbydashboard.SyncTaskImpl;
+import com.brightinteractive.standbydashboard.sync.service.SyncTaskImpl;
+import com.brightinteractive.standbydashboard.application.logging.EventInMemoryAppender;
 
 /**
  * @author Bright Interactive

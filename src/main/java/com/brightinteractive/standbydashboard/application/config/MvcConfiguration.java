@@ -1,4 +1,4 @@
-package com.brightinteractive.standbydashboard.config;
+package com.brightinteractive.standbydashboard.application.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;

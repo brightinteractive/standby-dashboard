@@ -1,4 +1,4 @@
-package com.brightinteractive.standbydashboard;
+package com.brightinteractive.standbydashboard.application.config;
 
 /*
  * Copyright 2014 Bright Interactive, All Rights Reserved.
@@ -15,7 +15,11 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Controller;
 
 import com.brightinteractive.spring.utils.BrightConfigUtils;
-import com.brightinteractive.standbydashboard.controller.SettingsBean;
+import com.brightinteractive.standbydashboard.sync.service.Scheduler;
+import com.brightinteractive.standbydashboard.sync.service.SchedulerImpl;
+import com.brightinteractive.standbydashboard.sync.service.SyncTask;
+import com.brightinteractive.standbydashboard.sync.service.SyncTaskImpl;
+import com.brightinteractive.standbydashboard.application.controller.SettingsBean;
 
 /**
  * @author Bright Interactive

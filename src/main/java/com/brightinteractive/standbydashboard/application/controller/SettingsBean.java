@@ -1,4 +1,4 @@
-package com.brightinteractive.standbydashboard.controller;
+package com.brightinteractive.standbydashboard.application.controller;
 
 /*
  * Copyright 2014 Bright Interactive, All Rights Reserved.
