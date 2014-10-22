@@ -10,22 +10,25 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Configuration
-@ComponentScan(basePackages="com.brightinteractive.standbydashboard")
+@ComponentScan(basePackages = "com.brightinteractive.standbydashboard")
 @EnableWebMvc
-public class MvcConfiguration extends WebMvcConfigurerAdapter{
+public class MvcConfiguration extends WebMvcConfigurerAdapter
+{
 
 	@Bean
-	public ViewResolver getViewResolver(){
+	public ViewResolver getViewResolver()
+	{
 		InternalResourceViewResolver resolver = new InternalResourceViewResolver();
 		resolver.setPrefix("/WEB-INF/views/");
 		resolver.setSuffix(".jsp");
 		return resolver;
 	}
-	
+
 	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+	public void addResourceHandlers(ResourceHandlerRegistry registry)
+	{
 		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
 	}
 
-	
+
 }

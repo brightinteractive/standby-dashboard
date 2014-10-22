@@ -5,7 +5,6 @@ package com.brightinteractive.standbydashboard;
  */
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -87,7 +86,7 @@ public class SyncTaskImpl extends CopyTask implements SyncTask
 
 		List<String> includeFilenames = new ArrayList<String>();
 
-		for (FileObject file: files)
+		for (FileObject file : files)
 		{
 			includeFilenames.add(file.getName().getBaseName());
 		}

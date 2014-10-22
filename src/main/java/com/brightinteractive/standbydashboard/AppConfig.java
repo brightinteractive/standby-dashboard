@@ -22,8 +22,8 @@ import com.brightinteractive.standbydashboard.controller.SettingsBean;
  */
 @Configuration
 @EnableScheduling
-@ComponentScan(basePackages = {"com.brightinteractive"},
-		excludeFilters = @ComponentScan.Filter(value = Controller.class, type = FilterType.ANNOTATION))
+@ComponentScan(basePackages = { "com.brightinteractive" },
+			   excludeFilters = @ComponentScan.Filter(value = Controller.class, type = FilterType.ANNOTATION))
 public class AppConfig
 {
 	public static String APPLICATION_PROPERTIES_FILE = "settings";

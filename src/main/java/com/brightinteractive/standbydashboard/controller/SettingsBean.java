@@ -5,7 +5,6 @@ package com.brightinteractive.standbydashboard.controller;
  */
 
 import java.text.ParseException;
-import java.util.*;
 
 import org.springframework.beans.factory.annotation.Value;
 
@@ -65,6 +64,7 @@ public class SettingsBean
 	{
 		this.excluded = excluded;
 	}
+
 	@Value("${destination.ignoreMissing}")
 	public void setIgnored(String ignored)
 	{
@@ -76,6 +76,7 @@ public class SettingsBean
 	{
 		this.destination = destination;
 	}
+
 	@Value("${schedule.cron}")
 	public void setSchedule(String schedule)
 	{
@@ -88,6 +89,7 @@ public class SettingsBean
 			this.schedule = schedule;
 		}
 	}
+
 	@Value("${source.includes}")
 	public void setIncluded(String included)
 	{

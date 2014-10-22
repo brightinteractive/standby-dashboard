@@ -4,10 +4,6 @@ package com.brightinteractive.standbydashboard;
  * Copyright 2014 Bright Interactive, All Rights Reserved.
  */
 
-import java.util.*;
-
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -28,7 +24,7 @@ public class SchedulerImpl implements Scheduler
 	@Autowired
 	ApplicationContext context;
 
-	@Scheduled(cron="${schedule.cron}")
+	@Scheduled(cron = "${schedule.cron}")
 	public void fireEvent()
 	{
 		SyncTask syncTask = context.getBean(SyncTask.class);

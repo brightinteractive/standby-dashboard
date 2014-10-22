@@ -2,7 +2,6 @@ package com.brightinteractive.standbydashboard.controller;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +17,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.apache.commons.io.IOUtils;
 
 @Controller
-public class HomeController {
+public class HomeController
+{
 
 	private final int LOG_LINES_TO_SHOW = 6;
 	@Autowired
@@ -26,7 +26,7 @@ public class HomeController {
 	@Value("${log.directory}")
 	private String logDirectory;
 
-	@RequestMapping(value="/")
+	@RequestMapping(value = "/")
 	public ModelAndView test(HttpServletResponse response) throws IOException
 	{
 		Map model = new HashMap();

@@ -4,7 +4,8 @@ package com.brightinteractive.standbydashboard;
  * Copyright 2014 Bright Interactive, All Rights Reserved.
  */
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 
 import org.apache.commons.vfs2.FileName;
 import org.apache.commons.vfs2.FileSelectInfo;
