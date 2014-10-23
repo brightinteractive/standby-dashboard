@@ -1,9 +1,10 @@
 package com.brightinteractive.standbydashboard.application.logging;
 
+import static org.junit.Assert.assertEquals;
+
 import org.apache.log4j.PatternLayout;
 import org.apache.log4j.spi.LoggingEvent;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
