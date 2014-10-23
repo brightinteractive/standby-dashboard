@@ -8,18 +8,18 @@ import java.util.*;
 
 import org.springframework.stereotype.Service;
 
+import com.brightinteractive.standbydashboard.sync.service.FileSyncTask;
 import org.apache.commons.collections.iterators.EnumerationIterator;
 import org.apache.log4j.Appender;
 import org.apache.log4j.Logger;
 
-import com.brightinteractive.standbydashboard.sync.service.SyncTaskImpl;
 import com.brightinteractive.standbydashboard.application.logging.EventInMemoryAppender;
 
 /**
  * @author Bright Interactive
  */
 @Service
-public class SyncTaskMessageProvider
+public class FileSyncTaskMessageProvider
 {
 	public List<String> getSyncTaskLogMessages()
 	{
@@ -49,6 +49,6 @@ public class SyncTaskMessageProvider
 
 	protected Iterator<Appender> getSyncTaskAppenders()
 	{
-		return new EnumerationIterator(Logger.getLogger(SyncTaskImpl.class.getName()).getAllAppenders());
+		return new EnumerationIterator(Logger.getLogger(FileSyncTask.class.getName()).getAllAppenders());
 	}
 }

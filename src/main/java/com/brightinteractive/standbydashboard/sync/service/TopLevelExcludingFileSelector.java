@@ -11,14 +11,11 @@ import org.apache.commons.vfs2.FileName;
 import org.apache.commons.vfs2.FileSelectInfo;
 import org.apache.commons.vfs2.FileSelector;
 
-/**
- * @author Bright Interactive
- */
-public class ExcludingFileSelector implements FileSelector
+public class TopLevelExcludingFileSelector implements FileSelector
 {
 	private List<String> excludes;
-
-	public void setExcludes(String excludeString)
+	
+	public TopLevelExcludingFileSelector(String excludeString)
 	{
 		this.excludes = Arrays.asList(excludeString.split(","));
 	}

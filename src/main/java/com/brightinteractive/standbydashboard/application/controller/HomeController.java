@@ -13,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import org.apache.log4j.Logger;
 
-import com.brightinteractive.standbydashboard.sync.logging.SyncTaskMessageProvider;
+import com.brightinteractive.standbydashboard.sync.logging.FileSyncTaskMessageProvider;
 
 @Controller
 public class HomeController
@@ -21,7 +21,7 @@ public class HomeController
 	@Autowired
 	private SettingsBean settingsBean;
 	@Autowired
-	private SyncTaskMessageProvider syncTaskMessageProvider;
+	private FileSyncTaskMessageProvider fileSyncTaskMessageProvider;
 
 	private Logger log = Logger.getLogger(this.getClass());
 
@@ -30,7 +30,7 @@ public class HomeController
 	{
 		Map model = new HashMap();
 
-		model.put("logLines", syncTaskMessageProvider.getSyncTaskLogMessages());
+		model.put("logLines", fileSyncTaskMessageProvider.getSyncTaskLogMessages());
 		model.put("settings", settingsBean);
 
 		return new ModelAndView("home", model);

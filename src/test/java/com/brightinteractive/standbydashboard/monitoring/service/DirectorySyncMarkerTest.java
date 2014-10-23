@@ -19,7 +19,7 @@ public class DirectorySyncMarkerTest
 	@Rule
 	public TemporaryFolder folder = new TemporaryFolder();
 	
-	public DirectorySyncMarker directorySyncMarker;
+	DirectorySyncMarker directorySyncMarker;
 	File sourceDirectory;
 	File destinationDirectory;
 	

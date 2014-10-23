@@ -15,10 +15,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Controller;
 
 import com.brightinteractive.spring.utils.BrightConfigUtils;
-import com.brightinteractive.standbydashboard.sync.service.Scheduler;
-import com.brightinteractive.standbydashboard.sync.service.SchedulerImpl;
-import com.brightinteractive.standbydashboard.sync.service.SyncTask;
-import com.brightinteractive.standbydashboard.sync.service.SyncTaskImpl;
+import com.brightinteractive.standbydashboard.sync.service.*;
+import com.brightinteractive.standbydashboard.sync.service.FileSyncTask;
 import com.brightinteractive.standbydashboard.application.controller.SettingsBean;
 
 /**
@@ -43,9 +41,9 @@ public class AppConfig
 	}
 
 	@Bean(name = "scheduler")
-	public Scheduler getScheduler()
+	public FileSyncScheduler getScheduler()
 	{
-		return new SchedulerImpl();
+		return new FileSyncScheduler();
 	}
 
 	@Bean(name = "settings")
@@ -56,8 +54,8 @@ public class AppConfig
 
 	@Bean(name = "syncTask")
 	@Scope(BeanDefinition.SCOPE_PROTOTYPE)
-	public SyncTask getSyncTask()
+	public FileSyncTask getSyncTask()
 	{
-		return new SyncTaskImpl();
+		return new FileSyncTask();
 	}
 }

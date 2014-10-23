@@ -11,16 +11,15 @@ import org.apache.log4j.Appender;
 import org.apache.log4j.ConsoleAppender;
 import org.junit.*;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
 import com.brightinteractive.standbydashboard.application.logging.EventInMemoryAppender;
 
-public class SyncTaskMessageProviderTest
+public class FileSyncTaskMessageProviderTest
 {
 	@Spy
-	private SyncTaskMessageProvider syncTaskMessageProvider = new SyncTaskMessageProvider();
+	private FileSyncTaskMessageProvider fileSyncTaskMessageProvider = new FileSyncTaskMessageProvider();
 	@Mock
 	private EventInMemoryAppender eventInMemoryAppender;
 	private List<String> expectedMessages = new ArrayList<String>();
@@ -38,10 +37,10 @@ public class SyncTaskMessageProviderTest
 	@Test
 	public void testGetSyncTaskLogMessagesReturnsEmptyListIfAppenderNotFound()
 	{
-		when(syncTaskMessageProvider.findLogAppender()).thenReturn(null);
+		when(fileSyncTaskMessageProvider.findLogAppender()).thenReturn(null);
 
-		assertNotNull(syncTaskMessageProvider.getSyncTaskLogMessages());
-		assertTrue(syncTaskMessageProvider.getSyncTaskLogMessages().isEmpty());
+		assertNotNull(fileSyncTaskMessageProvider.getSyncTaskLogMessages());
+		assertTrue(fileSyncTaskMessageProvider.getSyncTaskLogMessages().isEmpty());
 	}
 
 	@Test
@@ -51,9 +50,9 @@ public class SyncTaskMessageProviderTest
 		appenders.add(new ConsoleAppender());
 		appenders.add(eventInMemoryAppender);
 
-		when(syncTaskMessageProvider.getSyncTaskAppenders()).thenReturn(appenders.iterator());
+		when(fileSyncTaskMessageProvider.getSyncTaskAppenders()).thenReturn(appenders.iterator());
 
-		Assert.assertEquals(expectedMessages, syncTaskMessageProvider.getSyncTaskLogMessages());
+		Assert.assertEquals(expectedMessages, fileSyncTaskMessageProvider.getSyncTaskLogMessages());
 	}
 
 }
