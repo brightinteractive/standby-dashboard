@@ -33,7 +33,7 @@ At minimum you'll need to set valid values for
 
 Settings will also be looked for in a folder under the catalina conf folder with a name matches that the name of the artifact id. 
 
-e.g. [catalina.home]/conf/standby-dashboard/Application.properties
+e.g. [catalina.home]/conf/standby-dashboard/ApplicationSettings.properties
 
 To limit the need for overrides on the production server use the main settings file to store the sensible default settings
 unless doing so is deemed too risky.
