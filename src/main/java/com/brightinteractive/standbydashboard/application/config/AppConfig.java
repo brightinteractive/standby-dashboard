@@ -28,7 +28,7 @@ import com.brightinteractive.standbydashboard.application.controller.SettingsBea
 			   excludeFilters = @ComponentScan.Filter(value = Controller.class, type = FilterType.ANNOTATION))
 public class AppConfig
 {
-	public static String APPLICATION_PROPERTIES_FILE = "settings";
+	public static String APPLICATION_PROPERTIES_FILE = "ApplicationSettings";
 	public static String APP_CONTEXT_NAME = "standby-dashboard";
 
 	@Bean
