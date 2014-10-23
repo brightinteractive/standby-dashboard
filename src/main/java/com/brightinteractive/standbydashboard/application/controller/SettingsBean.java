@@ -53,31 +53,31 @@ public class SettingsBean
 		return included;
 	}
 
-	@Value("${source.directory}")
+	@Value("${fileSync.source.directory}")
 	public void setSource(String source)
 	{
 		this.source = source;
 	}
 
-	@Value("${source.excludes}")
+	@Value("${fileSync.source.excludes}")
 	public void setExcluded(String excluded)
 	{
 		this.excluded = excluded;
 	}
 
-	@Value("${destination.ignoreMissing}")
+	@Value("${fileSync.destination.ignoreMissing}")
 	public void setIgnored(String ignored)
 	{
 		this.ignored = ignored;
 	}
 
-	@Value("${destination.directory}")
+	@Value("${fileSync.destination.directory}")
 	public void setDestination(String destination)
 	{
 		this.destination = destination;
 	}
 
-	@Value("${schedule.cron}")
+	@Value("${fileSync.schedule.cron}")
 	public void setSchedule(String schedule)
 	{
 		try
@@ -90,7 +90,7 @@ public class SettingsBean
 		}
 	}
 
-	@Value("${source.includes}")
+	@Value("${fileSync.source.includes}")
 	public void setIncluded(String included)
 	{
 		this.included = included;

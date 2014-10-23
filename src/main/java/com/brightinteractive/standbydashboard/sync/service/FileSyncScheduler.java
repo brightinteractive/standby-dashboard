@@ -17,7 +17,7 @@ public class FileSyncScheduler
 	@Autowired
 	ApplicationContext context;
 
-	@Scheduled(cron = "${schedule.cron}")
+	@Scheduled(cron = "${fileSync.schedule.cron}")
 	public void fireEvent()
 	{
 		FileSyncTask syncTask = context.getBean(FileSyncTask.class);

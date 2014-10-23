@@ -40,39 +40,39 @@ public class FileSyncTask extends SyncTask
 		super.setSrcDirIsBase(true);				
 	}
 
-	@Value("${destination.directory}")
+	@Value("${fileSync.destination.directory}")
 	public void setDestinationDirectory(String destinationDirectory)
 	{
 		super.setDestDir(destinationDirectory);
 		this.destinationDirectory = destinationDirectory;
 	}
 
-	@Value("${source.directory}")
+	@Value("${fileSync.source.directory}")
 	public void setSourceDirectory(String sourceDirectory)
 	{
 		super.setSrcDir(sourceDirectory);
 		this.sourceDirectory = sourceDirectory;		
 	}
 
-	@Value("${destination.deleteMissing}")
+	@Value("${fileSync.destination.deleteMissing}")
 	public void setDeleteMissingSourceFiles(boolean deleteMissingSourceFiles)
 	{
 		this.deleteMissingSourceFiles = deleteMissingSourceFiles;
 	}
 
-	@Value("${destination.ignoreMissing}")
+	@Value("${fileSync.destination.ignoreMissing}")
 	public void setIgnoreMissingSource(String ignoreMissingSource)
 	{
 		this.ignoreMissingSource = ignoreMissingSource.split(",");
 	}
 
-	@Value("${source.includes}")
+	@Value("${fileSync.source.includes}")
 	public void setIncludeList(String includes)
 	{
 		this.includes = includes;
 	}
 
-	@Value("${source.excludes}")
+	@Value("${fileSync.source.excludes}")
 	public void setExcludeList(String excludes)
 	{
 		this.excludes = excludes;
