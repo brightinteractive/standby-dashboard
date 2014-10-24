@@ -7,12 +7,11 @@ package com.brightinteractive.standbydashboard.application.controller;
 import java.text.ParseException;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import net.redhogs.cronparser.CronExpressionDescriptor;
 
-/**
- * @author Bright Interactive
- */
+@Component
 public class SettingsBean
 {
 	private String source;

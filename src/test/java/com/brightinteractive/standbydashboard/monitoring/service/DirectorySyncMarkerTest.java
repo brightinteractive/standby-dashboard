@@ -29,7 +29,8 @@ public class DirectorySyncMarkerTest
 		destinationDirectory = folder.newFolder("destination");
 
 		directorySyncMarker = new DirectorySyncMarker(sourceDirectory.getPath(),
-													  destinationDirectory.getPath());
+													  destinationDirectory.getPath(),
+													  5);
 	}
 
 

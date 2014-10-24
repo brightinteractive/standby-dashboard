@@ -10,9 +10,6 @@ import java.util.List;
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.spi.LoggingEvent;
 
-/**
- * @author Bright Interactive
- */
 public class EventInMemoryAppender extends AppenderSkeleton
 {
 	public static final long DEFAULT_MAXIMUM_EVENTS_TO_KEEP = 1;
@@ -29,7 +26,7 @@ public class EventInMemoryAppender extends AppenderSkeleton
 
 	private void enforceEventLimit()
 	{
-		if(eventsList.size() > maximumEventsToKeep)
+		if (eventsList.size() > maximumEventsToKeep)
 		{
 			eventsList.remove(0);
 		}
@@ -38,11 +35,11 @@ public class EventInMemoryAppender extends AppenderSkeleton
 	public List<String> getEventMessages()
 	{
 		List<String> messages = new ArrayList<String>();
-		for(LoggingEvent loggingEvent : eventsList)
+		for (LoggingEvent loggingEvent : eventsList)
 		{
 			messages.add(getLayout().format(loggingEvent));
 		}
-		
+
 		return messages;
 	}
 
@@ -50,8 +47,8 @@ public class EventInMemoryAppender extends AppenderSkeleton
 	{
 		maximumEventsToKeep = a_maximumEventsToKeep;
 	}
-	
-	
+
+
 	@Override
 	public void close()
 	{

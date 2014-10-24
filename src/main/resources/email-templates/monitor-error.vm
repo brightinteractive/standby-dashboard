@@ -1,0 +1,5 @@
+Monitoring error : ${standbyName}
+
+${monitor.name}
+
+${throwable.message}

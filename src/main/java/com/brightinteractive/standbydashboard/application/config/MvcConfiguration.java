@@ -1,17 +1,16 @@
 package com.brightinteractive.standbydashboard.application.config;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.*;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Configuration
-@ComponentScan(basePackages = "com.brightinteractive.standbydashboard")
 @EnableWebMvc
+@ComponentScan(basePackages = { "com.brightinteractive" },
+			   useDefaultFilters = false,
+			   includeFilters = @ComponentScan.Filter(value = Controller.class, type = FilterType.ANNOTATION))
 public class MvcConfiguration extends WebMvcConfigurerAdapter
 {
 

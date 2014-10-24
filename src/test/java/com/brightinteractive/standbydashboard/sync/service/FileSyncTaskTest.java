@@ -1,13 +1,10 @@
 package com.brightinteractive.standbydashboard.sync.service;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
@@ -27,12 +24,12 @@ public class FileSyncTaskTest
 
 	@Before
 	public void setUp() throws Exception
-	{		
+	{
 		sourceDirectory = folder.newFolder("source");
-		destinationDirectory  = folder.newFolder("destination");
+		destinationDirectory = folder.newFolder("destination");
 	}
-	
-	
+
+
 	@Test
 	public void shouldSyncAllFiles() throws IOException
 	{
@@ -42,20 +39,20 @@ public class FileSyncTaskTest
 
 		syncTask.execute();
 
-		assertEquals(dirToString(sourceDirectory), dirToString(destinationDirectory));		
+		assertEquals(dirToString(sourceDirectory), dirToString(destinationDirectory));
 	}
-	
+
 	@Test
 	public void shouldSyncAllFilesInSourceFolderWithoutExplicitIncludesOrExcludes() throws IOException
 	{
 		createNestedDirs(sourceDirectory, "lvl", 0, 3);
-		FileSyncTask syncTask = createSyncTask();		
+		FileSyncTask syncTask = createSyncTask();
 
 		syncTask.execute();
 
 		assertEquals(dirToString(sourceDirectory), dirToString(destinationDirectory));
 	}
-	
+
 	@Test
 	public void shouldSyncAllFilesInSourceFolderWhenIncludesAndExcludesAreEmpty() throws IOException
 	{
@@ -78,8 +75,8 @@ public class FileSyncTaskTest
 		createNestedDirs(ignored, "ig", 0, 2);
 		FileSyncTask syncTask = createSyncTask();
 		createTextFile(sourceDirectory, "test.txt", "test");
-		
-		
+
+
 		syncTask.setIncludeList("test.txt,lvl0");
 		syncTask.execute();
 
@@ -208,14 +205,14 @@ public class FileSyncTaskTest
 		assertEquals("ex0.txt(ex-0-text);ex1.txt(ex-1-text);lvl0.txt(lvl-0-text);lvl1.txt(lvl-1-text);lvl2.txt(lvl-2-text);lvl3.txt(lvl-3-text);", dirToString(sourceDirectory));
 		assertEquals("lvl0.txt(lvl-0-text);lvl1.txt(lvl-1-text);lvl2.txt(lvl-2-text);lvl3.txt(lvl-3-text);", dirToString(destinationDirectory));
 	}
-	
+
 	@Test
 	public void shouldNotSyncExcludeTopLevelFile() throws IOException
 	{
 		createNestedDirs(sourceDirectory, "lvl", 0, 3);
 		createTextFile(sourceDirectory, "excluded.txt", "excluded");
-				
-		
+
+
 		FileSyncTask syncTask = createSyncTask();
 
 		syncTask.setExcludeList("excluded.txt");
@@ -276,7 +273,7 @@ public class FileSyncTaskTest
 		Collections.sort(fileInfoList);
 		return StringUtils.join(fileInfoList, "");
 	}
-	
+
 	private File createNestedDirs(File parentDir, String prefix, int current, int max) throws IOException
 	{
 		File levelDir = new File(parentDir, prefix + current);

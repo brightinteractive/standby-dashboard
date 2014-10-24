@@ -7,14 +7,12 @@ package com.brightinteractive.standbydashboard.sync.service;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.vfs2.FileName;
-import org.apache.commons.vfs2.FileSelectInfo;
-import org.apache.commons.vfs2.FileSelector;
+import org.apache.commons.vfs2.*;
 
 public class TopLevelExcludingFileSelector implements FileSelector
 {
 	private List<String> excludes;
-	
+
 	public TopLevelExcludingFileSelector(String excludeString)
 	{
 		this.excludes = Arrays.asList(excludeString.split(","));

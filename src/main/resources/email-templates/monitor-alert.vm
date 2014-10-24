@@ -1,0 +1,5 @@
+Monitoring alert : ${standbyName}
+
+${monitor.name}
+
+${monitor.alertMessage}

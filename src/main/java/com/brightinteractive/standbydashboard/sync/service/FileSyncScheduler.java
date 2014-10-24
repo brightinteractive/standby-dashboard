@@ -7,9 +7,11 @@ package com.brightinteractive.standbydashboard.sync.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import org.apache.log4j.Logger;
 
+@Component
 public class FileSyncScheduler
 {
 	private Logger log = Logger.getLogger(this.getClass());

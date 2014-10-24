@@ -8,17 +8,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.vfs2.*;
-import org.apache.commons.vfs2.tasks.*;
+import org.apache.commons.vfs2.tasks.SyncTask;
 import org.apache.log4j.Logger;
 import org.apache.tools.ant.Project;
 
-/**
- * @author Bright Interactive
- */
-
+@Component
+@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class FileSyncTask extends SyncTask
 {
 	private Logger log = Logger.getLogger(this.getClass());
@@ -37,7 +38,7 @@ public class FileSyncTask extends SyncTask
 	public FileSyncTask()
 	{
 		super.setProject(project);
-		super.setSrcDirIsBase(true);				
+		super.setSrcDirIsBase(true);
 	}
 
 	@Value("${fileSync.destination.directory}")
@@ -51,7 +52,7 @@ public class FileSyncTask extends SyncTask
 	public void setSourceDirectory(String sourceDirectory)
 	{
 		super.setSrcDir(sourceDirectory);
-		this.sourceDirectory = sourceDirectory;		
+		this.sourceDirectory = sourceDirectory;
 	}
 
 	@Value("${fileSync.destination.deleteMissing}")

@@ -7,14 +7,11 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.brightinteractive.standbydashboard.application.logging.EventInMemoryAppender;
 import org.apache.log4j.Appender;
 import org.apache.log4j.ConsoleAppender;
 import org.junit.*;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
-
-import com.brightinteractive.standbydashboard.application.logging.EventInMemoryAppender;
+import org.mockito.*;
 
 public class FileSyncTaskMessageProviderTest
 {
