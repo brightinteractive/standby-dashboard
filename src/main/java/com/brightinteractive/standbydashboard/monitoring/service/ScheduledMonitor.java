@@ -37,17 +37,17 @@ public class ScheduledMonitor
 		{
 			if (monitor.isSuccessful())
 			{
-				log.info(String.format("Monitor (%s) successful - reseting monitor" ));
+				log.info(String.format("Monitor (%s) successful - reseting monitor", monitor.getName() ));
 				monitor.reset();
 			}
 			else if (monitor.shouldAlert())
 			{
-				log.info(String.format("Monitor (%s) failed - alerting"));
+				log.info(String.format("Monitor (%s) failed - alerting", monitor.getName()));
 				notifier.monitoringAlert(monitor);
 			}
 			else
 			{
-				log.info(String.format("Monitor (%s) failed - waiting to alert"));
+				log.info(String.format("Monitor (%s) failed - waiting to alert", monitor.getName()));
 			}
 		}
 		catch (MonitoringException e)
