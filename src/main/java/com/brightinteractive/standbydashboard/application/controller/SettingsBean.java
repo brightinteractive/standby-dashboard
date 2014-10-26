@@ -14,84 +14,97 @@ import net.redhogs.cronparser.CronExpressionDescriptor;
 @Component
 public class SettingsBean
 {
-	private String source;
-	private String destination;
-	private String schedule;
-	private String ignored;
-	private String excluded;
-
-	private String included;
-
-	public String getSource()
-	{
-		return source;
-	}
-
-	public String getDestination()
-	{
-		return destination;
-	}
-
-	public String getSchedule()
-	{
-		return schedule;
-	}
-
-	public String getIgnored()
-	{
-		return ignored;
-	}
-
-	public String getExcluded()
-	{
-		return excluded;
-	}
-
-	public String getIncluded()
-	{
-		return included;
-	}
-
 	@Value("${fileSync.source.directory}")
-	public void setSource(String source)
-	{
-		this.source = source;
-	}
-
-	@Value("${fileSync.source.excludes}")
-	public void setExcluded(String excluded)
-	{
-		this.excluded = excluded;
-	}
-
-	@Value("${fileSync.destination.ignoreMissing}")
-	public void setIgnored(String ignored)
-	{
-		this.ignored = ignored;
-	}
-
+	private String syncSource;
 	@Value("${fileSync.destination.directory}")
-	public void setDestination(String destination)
+	private String syncDestination;
+	@Value("${fileSync.schedule.cron}")
+	private String schedule;
+	@Value("${fileSync.destination.ignoreMissing}")
+	private String syncIgnored;
+	@Value("${fileSync.source.excludes}")
+	private String syncExcluded;
+	@Value("${fileSync.source.includes}")
+	private String syncIncluded;
+	
+	@Value("${monitor.fileSync.schedule.cron}")
+	private String monitorSchedule;
+	@Value("${monitor.fileSync.source.directory}")
+	private String monitorSource;
+	@Value("${monitor.fileSync.destination.directory}")
+	private String monitorDestination;
+	@Value("${monitor.fileSync.minutesAfterLastConfirmedSyncToAlert}")
+	private String monitorThreshold;
+
+	@Value("${monitor.notify.email.from}")
+	private String monitorNotifyFrom;
+	@Value("${monitor.notify.email.to}")
+	private String monitorNotifyTo;
+
+	public String getSyncSource()
 	{
-		this.destination = destination;
+		return syncSource;
 	}
 
-	@Value("${fileSync.schedule.cron}")
-	public void setSchedule(String schedule)
+	public String getSyncDestination()
+	{
+		return syncDestination;
+	}
+
+	public String getSyncSchedule()
 	{
 		try
 		{
-			this.schedule = CronExpressionDescriptor.getDescription(schedule);
+			return CronExpressionDescriptor.getDescription(schedule);
 		}
 		catch (ParseException e)
 		{
-			this.schedule = schedule;
-		}
+			return schedule;
+		}		
 	}
 
-	@Value("${fileSync.source.includes}")
-	public void setIncluded(String included)
+	public String getSyncIgnored()
 	{
-		this.included = included;
+		return syncIgnored;
+	}
+
+	public String getSyncExcluded()
+	{
+		return syncExcluded;
+	}
+
+	public String getSyncIncluded()
+	{
+		return syncIncluded;
+	}
+
+	public String getMonitorSchedule()
+	{
+		return monitorSchedule;
+	}
+
+	public String getMonitorSource()
+	{
+		return monitorSource;
+	}
+
+	public String getMonitorDestination()
+	{
+		return monitorDestination;
+	}
+
+	public String getMonitorThreshold()
+	{
+		return monitorThreshold;
+	}
+
+	public String getMonitorNotifyFrom()
+	{
+		return monitorNotifyFrom;
+	}
+
+	public String getMonitorNotifyTo()
+	{
+		return monitorNotifyTo;
 	}
 }

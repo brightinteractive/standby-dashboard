@@ -12,13 +12,20 @@
     <body>
 		<div class="centre">
 			<div id="settings">
-				<h1>Standby settings</h1>
-				<label for="schedule">Schedule</label><input id="schedule" type="text" readonly="readonly" value='<c:out value="${settings.schedule}"/>'>
-				<label for="source">Source</label><input id="source" type="text" readonly="readonly" value='<c:out value="${settings.source}"/>'>
-				<label for="destination">Destination</label><input id="destination" type="text" readonly="readonly" value='<c:out value="${settings.destination}"/>'>
-				<label for="included">Included</label><input id="included" type="text" readonly="readonly" value='<c:out value="${settings.included}"/>'>
-				<label for="excluded">Excluded</label><input id="excluded" type="text" readonly="readonly" value='<c:out value="${settings.excluded}"/>'>
-				<label for="ignored">Ignored</label><input id="ignored" type="text" readonly="readonly" value='<c:out value="${settings.ignored}"/>'>
+				<h1>Standby Sync Settings</h1>
+				<label for="syncSchedule">Schedule</label><input id="syncSchedule" type="text" readonly="readonly" value="${settings.syncSchedule}"/>
+				<label for="syncSource">Source</label><input id="syncSource" type="text" readonly="readonly" value="${settings.syncSource}"/>
+				<label for="syncDestination">Destination</label><input id="syncDestination" type="text" readonly="readonly" value="${settings.syncDestination}"/>
+				<label for="syncIncluded">Included</label><input id="syncIncluded" type="text" readonly="readonly" value="${settings.syncIncluded}"/>
+				<label for="syncExcluded">Excluded</label><input id="syncExcluded" type="text" readonly="readonly" value="${settings.syncExcluded}"/>
+				<label for="syncIgnored">Ignored</label><input id="syncIgnored" type="text" readonly="readonly" value="${settings.syncIgnored}"/>			
+				<h1>Standby Monitor Settings</h1>				
+                <label for="monitorSource">Source</label><input id="monitorSource" type="text" readonly="readonly" value="${settings.monitorSource}"/>
+				<label for="monitorDestination">Destination</label><input id="monitorDestination" type="text" readonly="readonly" value="${settings.monitorDestination}"/>
+                <label for="monitorSchedule">Schedule</label><input id="monitorSchedule" type="text" readonly="readonly" value="${settings.monitorSchedule}"/>
+                <label for="monitorThreshold">Monitor Threshold (minutes)</label><input id="monitorThreshold" type="text" readonly="readonly" value="${settings.monitorThreshold}"/>
+                <label for="monitorNotifyFrom">Notify From</label><input id="monitorNotifyFrom" type="text" readonly="readonly" value="${settings.monitorNotifyFrom}"/>
+                <label for="monitorNotifyTo">Notify To</label><input id="monitorNotifyTo" type="text" readonly="readonly" value="${settings.monitorNotifyTo}"/>			
 			</div>
 			<div id="log">
 				<h1>Standby sync log</h1>

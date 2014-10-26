@@ -16,13 +16,16 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.vfs2.*;
+import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.Minutes;
 
 @Component
 public class DirectorySyncMarker implements Monitor
 {
-	private static final String MARKER_FILE_NAME = ".sync-marker";
+	private Logger log = Logger.getLogger(this.getClass());
+	
+	protected static final String MARKER_FILE_NAME = ".sync-marker";
 
 	private String sourceDirectoryPath;
 	private String destinationDirectoryPath;
@@ -43,12 +46,13 @@ public class DirectorySyncMarker implements Monitor
 	}
 
 	protected void writeSourceMarker()
-	{
+	{	
+		log.info(String.format("Writing marker %s", getSourceMarkerFilePath()));
 		OutputStream sourceMarker = null;
 
 		try
 		{
-			sourceMarker = getVFSManager().resolveFile(getSourceDirectoryFilePath()).getContent().getOutputStream();
+			sourceMarker = getVFSManager().resolveFile(getSourceMarkerFilePath()).getContent().getOutputStream();
 			IOUtils.write(generateMarkerFileContents(), sourceMarker);
 		}
 		catch (IOException e)
@@ -61,12 +65,12 @@ public class DirectorySyncMarker implements Monitor
 		}
 	}
 
-	private String getSourceDirectoryFilePath()
+	private String getSourceMarkerFilePath()
 	{
 		return FilenameUtils.concat(sourceDirectoryPath, MARKER_FILE_NAME);
 	}
 
-	private String getDestinationDirectoryPath()
+	private String getDestinationMarkerFilePath()
 	{
 		return FilenameUtils.concat(destinationDirectoryPath, MARKER_FILE_NAME);
 	}
@@ -80,6 +84,8 @@ public class DirectorySyncMarker implements Monitor
 	{
 		InputStream sourceMarkerData = null;
 		InputStream destinationMarkerData = null;
+		
+		log.info(String.format("Comparing %s and %s", getSourceMarkerFilePath(), getDestinationMarkerFilePath()));
 
 		try
 		{
@@ -112,12 +118,12 @@ public class DirectorySyncMarker implements Monitor
 
 	private InputStream getSourceMarkerData() throws IOException
 	{
-		return getMarkerData(getSourceDirectoryFilePath());
+		return getMarkerData(getSourceMarkerFilePath());
 	}
 
 	private InputStream getDestinationMarkerData() throws IOException
 	{
-		return getMarkerData(getDestinationDirectoryPath());
+		return getMarkerData(getDestinationMarkerFilePath());
 	}
 
 	private FileSystemManager getVFSManager() throws FileSystemException

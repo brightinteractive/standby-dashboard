@@ -11,8 +11,8 @@ public interface Monitor
 	void reset();
 
 	boolean shouldAlert();
-	
+
 	String getName();
-	
+
 	String getAlertMessage();
 }

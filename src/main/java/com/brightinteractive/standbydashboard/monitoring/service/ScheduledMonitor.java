@@ -11,10 +11,13 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.brightinteractive.standbydashboard.monitoring.exception.MonitoringException;
+import org.apache.log4j.Logger;
 
 @Component
 public class ScheduledMonitor
 {
+	private Logger log = Logger.getLogger(this.getClass());
+	
 	@Autowired
 	Monitor monitor;
 
@@ -34,11 +37,17 @@ public class ScheduledMonitor
 		{
 			if (monitor.isSuccessful())
 			{
+				log.info(String.format("Monitor (%s) successful - reseting monitor" ));
 				monitor.reset();
 			}
 			else if (monitor.shouldAlert())
 			{
+				log.info(String.format("Monitor (%s) failed - alerting"));
 				notifier.monitoringAlert(monitor);
+			}
+			else
+			{
+				log.info(String.format("Monitor (%s) failed - waiting to alert"));
 			}
 		}
 		catch (MonitoringException e)

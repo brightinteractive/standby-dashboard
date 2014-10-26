@@ -5,16 +5,21 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Iterator;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.FileFileFilter;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.joda.time.DateTime;
 import org.junit.*;
 import org.junit.rules.TemporaryFolder;
 
 public class DirectorySyncMarkerTest
 {
+	public static final int DEFAULT_MINUTES_AFTER_LAST_CONFIRMED_SYNC_TO_ALERT = 5;
 	@Rule
 	public TemporaryFolder folder = new TemporaryFolder();
 
@@ -30,7 +35,7 @@ public class DirectorySyncMarkerTest
 
 		directorySyncMarker = new DirectorySyncMarker(sourceDirectory.getPath(),
 													  destinationDirectory.getPath(),
-													  5);
+													  DEFAULT_MINUTES_AFTER_LAST_CONFIRMED_SYNC_TO_ALERT);
 	}
 
 
@@ -104,6 +109,46 @@ public class DirectorySyncMarkerTest
 
 		assertFalse(directorySyncMarker.markersMatch());
 	}
+	
+	@Test
+	public void testShouldAlertWhenThresholdNotExceeded()  throws Exception
+	{
+		directorySyncMarker.writeSourceMarker();
+		simulateSuccessfulSync();
+		assertFalse(directorySyncMarker.shouldAlert());
+	}
+	
+	@Test
+	public void testShouldAlertWhenThresholdExceeded()  throws Exception
+	{
+		directorySyncMarker.writeSourceMarker();
+		simulateSuccessfulSync();
+		simulateSourceMarkerWrittenMinutesAgo(DEFAULT_MINUTES_AFTER_LAST_CONFIRMED_SYNC_TO_ALERT+1);
+		
+		assertTrue(directorySyncMarker.shouldAlert());
+	}
+	
+	@Test
+	public void testGetNameContainsSourceAndDestination()
+	{
+		assertTrue(directorySyncMarker.getName().contains(sourceDirectory.getAbsolutePath()));
+		assertTrue(directorySyncMarker.getName().contains(destinationDirectory.getAbsolutePath()));
+	}
+	
+	@Test
+	public void testGetAlertMessageNotEmpty()
+	{
+		directorySyncMarker.writeSourceMarker();
+		assertFalse(StringUtils.isEmpty(directorySyncMarker.getAlertMessage()));		
+	}
+	
+
+	private void simulateSourceMarkerWrittenMinutesAgo(int defaultMinutesAfterLastConfirmedSyncToAlert) throws Exception
+	{		
+		FileUtils.write(new File(sourceDirectory+File.separator+DirectorySyncMarker.MARKER_FILE_NAME), 
+						String.valueOf(new DateTime().minusMinutes(defaultMinutesAfterLastConfirmedSyncToAlert).toDate().getTime()));
+	}
+
 
 	private File getFirstFileInSourceDir()
 	{
