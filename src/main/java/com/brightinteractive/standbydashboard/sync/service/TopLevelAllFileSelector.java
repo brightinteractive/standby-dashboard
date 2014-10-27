@@ -4,8 +4,7 @@ package com.brightinteractive.standbydashboard.sync.service;
  * Copyright 2014 Bright Interactive, All Rights Reserved.
  */
 
-import org.apache.commons.vfs2.FileSelectInfo;
-import org.apache.commons.vfs2.FileSelector;
+import org.apache.commons.vfs2.*;
 import org.apache.log4j.Logger;
 
 public class TopLevelAllFileSelector implements FileSelector
@@ -23,7 +22,11 @@ public class TopLevelAllFileSelector implements FileSelector
 	public boolean includeFile(FileSelectInfo fileInfo) throws Exception
 	{
 		String filePath = fileInfo.getFile().getName().getPath();
-		log.debug(String.format("Checking %s for inclusions/exclusion",filePath));
+		FileObject topLevelFolder = VFS.getManager().resolveFile(topLevelPath);
+		String topLevelPath = topLevelFolder.getName().getPath();
+				
+		log.debug(String.format("File included if %s != %s",filePath, topLevelPath));
+		
 		return !filePath.equals(topLevelPath);
 	}
 
