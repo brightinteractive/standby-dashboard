@@ -1,0 +1,5 @@
+Monitoring alert cleared : ${standbyName}
+
+${monitor.name}
+
+${monitor.alertClearedMessage}

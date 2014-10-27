@@ -25,7 +25,16 @@ public class ScheduledMonitorTest
 	}
 
 	@Test
-	public void testStartupResetMonitorCalled() throws Exception
+	public void testStartupResetMonitorCalledWhenMonitorHasNotRunBefore() throws Exception
+	{
+		when(monitor.hasRunBefore()).thenReturn(true);
+		scheduledMonitor.startup();
+
+		verify(monitor, never()).reset();
+	}
+	
+	@Test
+	public void testStartupResetMonitorNotCalledWhenMonitorHasRunBefore() throws Exception
 	{
 		scheduledMonitor.startup();
 
@@ -35,7 +44,7 @@ public class ScheduledMonitorTest
 	@Test
 	public void testRunMonitorResetIsCalledIfMonitorIsSuccessful() throws Exception
 	{
-		when(monitor.isSuccessful()).thenReturn(true);
+		when(monitor.checkIsSuccessful()).thenReturn(true);
 
 		scheduledMonitor.runMonitor();
 
@@ -45,7 +54,7 @@ public class ScheduledMonitorTest
 	@Test
 	public void testRunMonitorNotifierMonitoringAlertIsCalledIfMonitorIsNotSuccessfulAndShouldAlert() throws Exception
 	{
-		when(monitor.isSuccessful()).thenReturn(false);
+		when(monitor.checkIsSuccessful()).thenReturn(false);
 		when(monitor.shouldAlert()).thenReturn(true);
 
 		scheduledMonitor.runMonitor();
@@ -56,7 +65,7 @@ public class ScheduledMonitorTest
 	@Test
 	public void testRunMonitorNotifierMonitoringAlertIsNotCalledIfMonitorIsNotSuccessfulAndShouldNotAlert() throws Exception
 	{
-		when(monitor.isSuccessful()).thenReturn(false);
+		when(monitor.checkIsSuccessful()).thenReturn(false);
 		when(monitor.shouldAlert()).thenReturn(false);
 
 		scheduledMonitor.runMonitor();
@@ -65,15 +74,58 @@ public class ScheduledMonitorTest
 	}
 
 	@Test
-	public void testRunMonitorNotifierMonitoringErrorIsCalledIfMonitoringExcpetionIsThrown()
+	public void testRunMonitorNotifierMonitoringErrorIsCalledIfMonitoringExceptionIsThrown()
 	{
 		MonitoringException exception = new MonitoringException();
-		when(monitor.isSuccessful()).thenThrow(exception);
+		when(monitor.checkIsSuccessful()).thenThrow(exception);
 
 		scheduledMonitor.runMonitor();
 
 		verify(notifier).monitoringError(monitor, exception);
 	}
 
+	@Test
+	public void testRunMonitorMonitoringClearedIsCalledIfMonitorIsSuccessfulAndFailedPreviously() throws Exception
+	{
+		when(monitor.checkIsSuccessful()).thenReturn(true);
+		when(monitor.failedPreviously()).thenReturn(true);
+
+		scheduledMonitor.runMonitor();
+
+		verify(notifier).monitoringCleared(monitor);
+	}
+	
+	@Test
+	public void testRunMonitorMonitoringClearedIsNotCalledIfMonitorIsSuccessfulButNotFailedPreviously() throws Exception
+	{
+		when(monitor.checkIsSuccessful()).thenReturn(true);
+		when(monitor.failedPreviously()).thenReturn(false);
+
+		scheduledMonitor.runMonitor();
+
+		verify(notifier, never()).monitoringCleared(monitor);
+	}
+	
+	@Test
+	public void testRunMonitorMonitoringAlertClearedIsCalledIfMonitorIsSuccessfulAndFailedPreviously() throws Exception
+	{
+		when(monitor.checkIsSuccessful()).thenReturn(true);
+		when(monitor.failedPreviously()).thenReturn(true);
+
+		scheduledMonitor.runMonitor();
+
+		verify(monitor).clearAlert();
+	}
+	
+		@Test
+	public void testRunMonitorMonitoringAlertClearedIsNotCalledIfMonitorIsSuccessfulButFailedPreviously() throws Exception
+	{
+		when(monitor.checkIsSuccessful()).thenReturn(true);
+		when(monitor.failedPreviously()).thenReturn(false);
+
+		scheduledMonitor.runMonitor();
+
+		verify(monitor, never()).clearAlert();
+	}
 
 }

@@ -9,4 +9,6 @@ public interface Notifier
 	public void monitoringError(Monitor monitor, Throwable throwable);
 
 	public void monitoringAlert(Monitor monitor);
+
+	void monitoringCleared(Monitor monitor);
 }

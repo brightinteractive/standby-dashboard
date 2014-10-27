@@ -59,6 +59,18 @@ public class EmailNotifier implements Notifier
 		mailSender.send(message);
 	}
 
+	@Override
+	public void monitoringCleared(Monitor monitor)
+	{
+		SimpleMailMessage message = new SimpleMailMessage(getMonitorMessageTemplate());
+		message.setSubject(String.format("Monitoring Alert Cleared : %s", standbyName));
+		message.setText(velocityTemplates.merge(getCommonModelMap(monitor), "monitor-alert-cleared.vm"));
+		
+		log.info("Sending monitoring alert cleared email");
+		mailSender.send(message);
+
+	}
+
 	private SimpleMailMessage getMonitorMessageTemplate()
 	{
 		SimpleMailMessage message = new SimpleMailMessage();

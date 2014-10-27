@@ -22,10 +22,11 @@ import org.joda.time.Minutes;
 
 @Component
 public class DirectorySyncMarker implements Monitor
-{
+{	
 	private Logger log = Logger.getLogger(this.getClass());
 	
-	protected static final String MARKER_FILE_NAME = ".sync-marker";
+	protected static final String SYNC_MARKER_FILE_NAME = ".sync-marker";
+	private static final String FAILED_MARKER_FILE_NAME = ".sync-failed";
 
 	private String sourceDirectoryPath;
 	private String destinationDirectoryPath;
@@ -47,13 +48,18 @@ public class DirectorySyncMarker implements Monitor
 
 	protected void writeSourceMarker()
 	{	
-		log.info(String.format("Writing marker %s", getSourceMarkerFilePath()));
+		writeToDirectory(getSourceMarkerFilePath(), generateMarkerFileContents());		
+	}
+	
+	protected void writeToDirectory(String filePath, String fileContents)
+	{	
+		log.info(String.format("Writing to %s", filePath));
 		OutputStream sourceMarker = null;
 
 		try
 		{
-			sourceMarker = getVFSManager().resolveFile(getSourceMarkerFilePath()).getContent().getOutputStream();
-			IOUtils.write(generateMarkerFileContents(), sourceMarker);
+			sourceMarker = getVFSManager().resolveFile(filePath).getContent().getOutputStream();
+			IOUtils.write(fileContents, sourceMarker);
 		}
 		catch (IOException e)
 		{
@@ -67,12 +73,12 @@ public class DirectorySyncMarker implements Monitor
 
 	private String getSourceMarkerFilePath()
 	{
-		return FilenameUtils.concat(sourceDirectoryPath, MARKER_FILE_NAME);
+		return FilenameUtils.concat(sourceDirectoryPath, SYNC_MARKER_FILE_NAME);
 	}
 
 	private String getDestinationMarkerFilePath()
 	{
-		return FilenameUtils.concat(destinationDirectoryPath, MARKER_FILE_NAME);
+		return FilenameUtils.concat(destinationDirectoryPath, SYNC_MARKER_FILE_NAME);
 	}
 
 	private String generateMarkerFileContents()
@@ -132,9 +138,36 @@ public class DirectorySyncMarker implements Monitor
 	}
 
 	@Override
-	public boolean isSuccessful()
+	public boolean checkIsSuccessful()
 	{
-		return markersMatch();
+		boolean isSuccessful = markersMatch();
+		
+		if(!isSuccessful)
+		{
+			setFailedPreviously();	
+		}
+			
+		return isSuccessful;
+	}
+
+	private void setFailedPreviously()
+	{
+		writeFailedMarker();
+	}
+
+	private void writeFailedMarker()
+	{
+		writeToDirectory(getFailedMarkerFilePath(), generateFailedFileContents());
+	}
+
+	private String generateFailedFileContents()
+	{
+		return "Sync failed";
+	}
+
+	private String getFailedMarkerFilePath()
+	{
+		return FilenameUtils.concat(sourceDirectoryPath, FAILED_MARKER_FILE_NAME);
 	}
 
 	@Override
@@ -161,6 +194,73 @@ public class DirectorySyncMarker implements Monitor
 		try
 		{
 			return String.format("A modification made in the source directory on %s has not appeared in the destination directory. The file sync may no longer be running.", timeMarkerWritten().toString("dd/MM/yyyy HH:mm"));
+		}
+		catch (IOException e)
+		{
+			throw new MonitoringException(e);
+		}
+	}
+
+	@Override
+	public boolean failedPreviously()
+	{
+		return failedMarkerExists();
+	}
+
+	private boolean failedMarkerExists()
+	{
+		try
+		{
+			return getVFSManager().resolveFile(getFailedMarkerFilePath()).exists();		
+		}
+		catch (IOException e)
+		{
+			throw new MonitoringException(e);
+		}
+	}
+
+	@Override
+	public void clearAlert()
+	{
+		deleteFailedMarker();
+	}
+
+	@Override
+	public String getAlertClearedMessage()
+	{
+		try
+		{
+			return String.format("A modification made in the source directory on %s has now appeared in the destination directory. The file sync appears to be running again.", timeMarkerWritten().toString("dd/MM/yyyy HH:mm"));
+		}
+		catch (IOException e)
+		{
+			throw new MonitoringException(e);
+		}
+	}
+
+	@Override
+	public boolean hasRunBefore()
+	{
+		return sourceMarkerExists();
+	}
+
+	protected boolean sourceMarkerExists()
+	{
+		try
+		{
+			return getVFSManager().resolveFile(getSourceMarkerFilePath()).exists();		
+		}
+		catch (IOException e)
+		{
+			throw new MonitoringException(e);
+		}
+	}
+
+	private void deleteFailedMarker()
+	{
+		try
+		{
+			getVFSManager().resolveFile(getFailedMarkerFilePath()).delete();		
 		}
 		catch (IOException e)
 		{

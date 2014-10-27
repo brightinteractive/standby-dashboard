@@ -5,11 +5,9 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
 import java.util.Iterator;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.FileFileFilter;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -45,6 +43,14 @@ public class DirectorySyncMarkerTest
 		directorySyncMarker.writeSourceMarker();
 
 		assertTrue(getFirstFileInSourceDir().exists());
+	}
+	
+	@Test
+	public void testSourceMarkerExists() throws Exception
+	{
+		directorySyncMarker.writeSourceMarker();
+
+		assertTrue(directorySyncMarker.sourceMarkerExists());
 	}
 
 	@Test
@@ -142,10 +148,63 @@ public class DirectorySyncMarkerTest
 		assertFalse(StringUtils.isEmpty(directorySyncMarker.getAlertMessage()));		
 	}
 	
+	@Test
+	public void testGetAlertClearedMessageNotEmpty()
+	{
+		directorySyncMarker.writeSourceMarker();
+		assertFalse(StringUtils.isEmpty(directorySyncMarker.getAlertClearedMessage()));		
+	}
+	
+	@Test
+	public void testFailedPreviouslyFalseWhenNoFailure() throws IOException
+	{
+		directorySyncMarker.writeSourceMarker();
+		simulateSuccessfulSync();
+		directorySyncMarker.checkIsSuccessful();
+		
+		assertFalse(directorySyncMarker.failedPreviously());
+	}
+	
+	@Test
+	public void testFailedPreviouslyFalseWhenFailureThenAlertCleared() throws IOException
+	{
+		directorySyncMarker.writeSourceMarker();
+		simulateSyncNotRunning();
+		directorySyncMarker.checkIsSuccessful();
+		assertTrue(directorySyncMarker.failedPreviously());
+		simulateSuccessfulSync();
+		directorySyncMarker.checkIsSuccessful();
+		directorySyncMarker.clearAlert();		
+		
+		assertFalse(directorySyncMarker.failedPreviously());
+	}
+		
+	@Test
+	public void testFailedPreviouslyTrueWhenFailure() throws IOException
+	{
+		directorySyncMarker.writeSourceMarker();
+		simulateSyncNotRunning();
+		directorySyncMarker.checkIsSuccessful();
+		assertTrue(directorySyncMarker.failedPreviously());
+	}
+		
+	@Test
+	public void testFailedPreviouslyTrueWhenFailureFollowedBySuccess() throws IOException
+	{
+		directorySyncMarker.writeSourceMarker();
+		simulateSyncNotRunning();
+		directorySyncMarker.checkIsSuccessful();
+		assertTrue(directorySyncMarker.failedPreviously());
+		simulateSuccessfulSync();
+		directorySyncMarker.checkIsSuccessful();
+		
+		assertTrue(directorySyncMarker.failedPreviously());
+	}
+	
 
 	private void simulateSourceMarkerWrittenMinutesAgo(int defaultMinutesAfterLastConfirmedSyncToAlert) throws Exception
 	{		
-		FileUtils.write(new File(sourceDirectory+File.separator+DirectorySyncMarker.MARKER_FILE_NAME), 
+		FileUtils.write(new File(sourceDirectory+File.separator+DirectorySyncMarker.SYNC_MARKER_FILE_NAME), 
 						String.valueOf(new DateTime().minusMinutes(defaultMinutesAfterLastConfirmedSyncToAlert).toDate().getTime()));
 	}
 

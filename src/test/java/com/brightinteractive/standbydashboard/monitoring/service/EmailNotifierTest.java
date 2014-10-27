@@ -107,4 +107,22 @@ public class EmailNotifierTest
 		verify(velocityTemplates).merge(velocityMapArgumentCaptor.capture(),anyString());
 		assertTrue(velocityMapArgumentCaptor.getValue().containsValue(monitor));
 	}
+	
+	@Test
+	public void testMonitoringClearedEmailSubjectContainStandbyName() throws Exception
+	{		
+		emailNotifier.monitoringCleared(monitor);
+		
+		verify(mailSender).send(messageArgumentCaptor.capture());
+		assertTrue(messageArgumentCaptor.getValue().getSubject().contains(TEST_STANDBY_NAME));
+	}
+	
+	@Test
+	public void testMonitoringClearedTextCanContainMonitor() throws Exception
+	{
+		emailNotifier.monitoringCleared(monitor);
+		
+		verify(velocityTemplates).merge(velocityMapArgumentCaptor.capture(),anyString());
+		assertTrue(velocityMapArgumentCaptor.getValue().containsValue(monitor));
+	}
 }

@@ -27,7 +27,10 @@ public class ScheduledMonitor
 	@PostConstruct
 	public void startup()
 	{
-		monitor.reset();
+		if(!monitor.hasRunBefore())
+		{
+			monitor.reset();
+		}
 	}
 
 	@Scheduled(cron = "${monitor.fileSync.schedule.cron}")
@@ -35,8 +38,14 @@ public class ScheduledMonitor
 	{
 		try
 		{
-			if (monitor.isSuccessful())
+			if (monitor.checkIsSuccessful())
 			{
+				if(monitor.failedPreviously())
+				{
+					log.info(String.format("Monitor (%s) alert cleared", monitor.getName() ));
+					notifier.monitoringCleared(monitor);
+					monitor.clearAlert();
+				}
 				log.info(String.format("Monitor (%s) successful - reseting monitor", monitor.getName() ));
 				monitor.reset();
 			}

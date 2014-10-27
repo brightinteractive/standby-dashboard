@@ -6,7 +6,7 @@ package com.brightinteractive.standbydashboard.monitoring.service;
 
 public interface Monitor
 {
-	boolean isSuccessful();
+	boolean checkIsSuccessful();
 
 	void reset();
 
@@ -15,4 +15,12 @@ public interface Monitor
 	String getName();
 
 	String getAlertMessage();
+
+	boolean failedPreviously();
+
+	void clearAlert();
+	
+	String getAlertClearedMessage();
+
+	boolean hasRunBefore();
 }
