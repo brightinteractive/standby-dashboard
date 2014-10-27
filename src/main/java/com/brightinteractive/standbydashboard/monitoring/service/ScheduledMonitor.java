@@ -62,6 +62,7 @@ public class ScheduledMonitor
 		catch (MonitoringException e)
 		{
 			notifier.monitoringError(monitor, e);
+			log.error(e);
 		}
 	}
 }
