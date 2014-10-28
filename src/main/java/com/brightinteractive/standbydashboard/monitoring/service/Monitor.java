@@ -16,10 +16,12 @@ public interface Monitor
 
 	String getAlertMessage();
 
+	void setFailed();
+
 	boolean failedPreviously();
 
 	void clearAlert();
-	
+
 	String getAlertClearedMessage();
 
 	boolean hasRunBefore();

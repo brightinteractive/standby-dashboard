@@ -20,7 +20,7 @@ public class MailConfig
 		props.put("resource.loader", "class");
 		props.put("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
 		factory.setVelocityProperties(props);
-		
+
 		return factory.createVelocityEngine();
 	}
 }

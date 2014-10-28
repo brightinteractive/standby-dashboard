@@ -47,7 +47,7 @@ public class AppConfig
 		return new SilentMailSender(mailSender);
 	}
 
-	
+
 	@Bean
 	public static VelocityEngine getVelocityEngine() throws IOException
 	{

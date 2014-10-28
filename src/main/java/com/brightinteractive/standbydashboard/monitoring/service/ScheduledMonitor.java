@@ -17,7 +17,7 @@ import org.apache.log4j.Logger;
 public class ScheduledMonitor
 {
 	private Logger log = Logger.getLogger(this.getClass());
-	
+
 	@Autowired
 	Monitor monitor;
 
@@ -27,7 +27,7 @@ public class ScheduledMonitor
 	@PostConstruct
 	public void startup()
 	{
-		if(!monitor.hasRunBefore())
+		if (!monitor.hasRunBefore())
 		{
 			monitor.reset();
 		}
@@ -40,18 +40,19 @@ public class ScheduledMonitor
 		{
 			if (monitor.checkIsSuccessful())
 			{
-				if(monitor.failedPreviously())
+				if (monitor.failedPreviously())
 				{
-					log.info(String.format("Monitor (%s) alert cleared", monitor.getName() ));
+					log.info(String.format("Monitor (%s) alert cleared", monitor.getName()));
 					notifier.monitoringCleared(monitor);
 					monitor.clearAlert();
 				}
-				log.info(String.format("Monitor (%s) successful - reseting monitor", monitor.getName() ));
+				log.info(String.format("Monitor (%s) successful - reseting monitor", monitor.getName()));
 				monitor.reset();
 			}
 			else if (monitor.shouldAlert())
 			{
 				log.info(String.format("Monitor (%s) failed - alerting", monitor.getName()));
+				monitor.setFailed();
 				notifier.monitoringAlert(monitor);
 			}
 			else

@@ -54,7 +54,7 @@ public class EmailNotifier implements Notifier
 		SimpleMailMessage message = new SimpleMailMessage(getMonitorMessageTemplate());
 		message.setSubject(String.format("Monitoring Alert : %s", standbyName));
 		message.setText(velocityTemplates.merge(getCommonModelMap(monitor), "monitor-alert.vm"));
-		
+
 		log.info("Sending monitoring alert email");
 		mailSender.send(message);
 	}
@@ -65,7 +65,7 @@ public class EmailNotifier implements Notifier
 		SimpleMailMessage message = new SimpleMailMessage(getMonitorMessageTemplate());
 		message.setSubject(String.format("Monitoring Alert Cleared : %s", standbyName));
 		message.setText(velocityTemplates.merge(getCommonModelMap(monitor), "monitor-alert-cleared.vm"));
-		
+
 		log.info("Sending monitoring alert cleared email");
 		mailSender.send(message);
 

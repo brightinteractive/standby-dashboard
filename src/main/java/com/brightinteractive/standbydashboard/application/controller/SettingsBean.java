@@ -26,7 +26,7 @@ public class SettingsBean
 	private String syncExcluded;
 	@Value("${fileSync.source.includes}")
 	private String syncIncluded;
-	
+
 	@Value("${monitor.fileSync.schedule.cron}")
 	private String monitorSchedule;
 	@Value("${monitor.fileSync.source.directory}")
@@ -60,7 +60,7 @@ public class SettingsBean
 		catch (ParseException e)
 		{
 			return schedule;
-		}		
+		}
 	}
 
 	public String getSyncIgnored()

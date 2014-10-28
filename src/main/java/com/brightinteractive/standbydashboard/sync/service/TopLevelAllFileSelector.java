@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 public class TopLevelAllFileSelector implements FileSelector
 {
 	private Logger log = Logger.getLogger(this.getClass());
-	
+
 	private String topLevelPath;
 
 	public TopLevelAllFileSelector(String topLevelPath)
@@ -24,9 +24,9 @@ public class TopLevelAllFileSelector implements FileSelector
 		String filePath = fileInfo.getFile().getName().getPath();
 		FileObject topLevelFolder = VFS.getManager().resolveFile(topLevelPath);
 		String topLevelPath = topLevelFolder.getName().getPath();
-				
-		log.debug(String.format("File included if %s != %s",filePath, topLevelPath));
-		
+
+		log.debug(String.format("File included if %s != %s", filePath, topLevelPath));
+
 		return !filePath.equals(topLevelPath);
 	}
 

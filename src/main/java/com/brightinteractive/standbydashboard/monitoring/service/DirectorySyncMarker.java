@@ -22,9 +22,9 @@ import org.joda.time.Minutes;
 
 @Component
 public class DirectorySyncMarker implements Monitor
-{	
+{
 	private Logger log = Logger.getLogger(this.getClass());
-	
+
 	protected static final String SYNC_MARKER_FILE_NAME = ".sync-marker";
 	private static final String FAILED_MARKER_FILE_NAME = ".sync-failed";
 
@@ -47,12 +47,12 @@ public class DirectorySyncMarker implements Monitor
 	}
 
 	protected void writeSourceMarker()
-	{	
-		writeToDirectory(getSourceMarkerFilePath(), generateMarkerFileContents());		
+	{
+		writeToDirectory(getSourceMarkerFilePath(), generateMarkerFileContents());
 	}
-	
+
 	protected void writeToDirectory(String filePath, String fileContents)
-	{	
+	{
 		log.info(String.format("Writing to %s", filePath));
 		OutputStream sourceMarker = null;
 
@@ -90,7 +90,7 @@ public class DirectorySyncMarker implements Monitor
 	{
 		InputStream sourceMarkerData = null;
 		InputStream destinationMarkerData = null;
-		
+
 		log.info(String.format("Comparing %s and %s", getSourceMarkerFilePath(), getDestinationMarkerFilePath()));
 
 		try
@@ -140,17 +140,10 @@ public class DirectorySyncMarker implements Monitor
 	@Override
 	public boolean checkIsSuccessful()
 	{
-		boolean isSuccessful = markersMatch();
-		
-		if(!isSuccessful)
-		{
-			setFailedPreviously();	
-		}
-			
-		return isSuccessful;
+		return markersMatch();
 	}
 
-	private void setFailedPreviously()
+	public void setFailed()
 	{
 		writeFailedMarker();
 	}
@@ -211,7 +204,7 @@ public class DirectorySyncMarker implements Monitor
 	{
 		try
 		{
-			return getVFSManager().resolveFile(getFailedMarkerFilePath()).exists();		
+			return getVFSManager().resolveFile(getFailedMarkerFilePath()).exists();
 		}
 		catch (IOException e)
 		{
@@ -248,7 +241,7 @@ public class DirectorySyncMarker implements Monitor
 	{
 		try
 		{
-			return getVFSManager().resolveFile(getSourceMarkerFilePath()).exists();		
+			return getVFSManager().resolveFile(getSourceMarkerFilePath()).exists();
 		}
 		catch (IOException e)
 		{
@@ -260,7 +253,7 @@ public class DirectorySyncMarker implements Monitor
 	{
 		try
 		{
-			getVFSManager().resolveFile(getFailedMarkerFilePath()).delete();		
+			getVFSManager().resolveFile(getFailedMarkerFilePath()).delete();
 		}
 		catch (IOException e)
 		{

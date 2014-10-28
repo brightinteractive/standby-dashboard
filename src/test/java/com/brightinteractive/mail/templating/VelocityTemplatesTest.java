@@ -1,8 +1,9 @@
 package com.brightinteractive.mail.templating;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.brightinteractive.mail.config.MailConfig;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -12,7 +13,7 @@ import org.junit.Test;
 
 public class VelocityTemplatesTest
 {
-	
+
 	VelocityEngine velocityEngine;
 	VelocityTemplates velocityTemplates;
 
@@ -28,12 +29,12 @@ public class VelocityTemplatesTest
 	public void testMerge() throws Exception
 	{
 		Map<String, Object> model = new HashMap<String, Object>();
-		
+
 		String someValue = RandomStringUtils.randomAscii(10);
 		model.put("key", someValue);
-		
+
 		String content = velocityTemplates.merge(model, "simple-template-on-classpath.vm");
-		
+
 		assertTrue(content.contains(someValue));
 	}
 }
